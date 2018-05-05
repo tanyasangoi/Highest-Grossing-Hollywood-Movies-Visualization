@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hollywood Movies</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+
+        h1{
+            font: 18px sans-serif;
+            font-weight: bold;
+            margin-left: 135px;
+            margin-top: 35px;
+        }
+
+        h2 {
+            font: 22px sans-serif;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            color: brown;
+        }
+
+        .bar{
+
+            fill: darkblue;
+        }
+
+        .bar:hover {
+            fill: brown;
+        }
+
+        p{
+            color: grey;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .options1{
+
+            position: absolute;
+            top: 670px;
+            left: 95px;
+            width: 700px;
+            height: 50px;
+
+        }
+
+        .options2{
+
+            position: absolute;
+            top: 675px;
+            left: 760px;
+            width: 700px;
+            height: 50px;
+            opacity:0;
+
+        }
+
+        .chart1 {
+            position: absolute;
+            top: 100px;
+            left: 40px;
+        }
+
+        .chart2 {
+            position: absolute;
+            top: 100px;
+            left: 700px;
+            width: 700px;
+            height: 700px;
+        }
+
+        div.tooltip {
+            position: absolute;
+            width: 150px;
+            min-height: 40px;
+            padding: 10px;
+            text-align: left;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+            vertical-align: middle;
+        }
+
+        div.studioTitle {
+            position: absolute;
+            font: 18px sans-serif;
+            font-weight: bold;
+            fill: black;
+            background: white;
+            width: 300px;
+            opacity: 0;
+
+        }
+
+        .button1{ background-color : #1f77b4; padding: 5px; margin: 5px; font-weight: bold;}
+        .button2{ background-color : #ff7f0e; padding: 5px; margin: 5px; font-weight: bold;}
+        .button3{ background-color : #2ca02c; padding: 5px; margin: 5px; font-weight: bold;}
+        .button4{ background-color : #d62728; padding: 5px; margin: 5px; font-weight: bold;}
+        .button5{ background-color : #e6ab02; padding: 5px; margin: 5px; font-weight: bold;}
+        .button6{ background-color : #8c564b; padding: 5px; margin: 5px; font-weight: bold;}
+        .button7{ background-color : #e377c2; padding: 5px; margin: 5px; font-weight: bold;}
+        .button8{ background-color : #7f7f7f; padding: 5px; margin: 5px; font-weight: bold;}
+        .button9{ background-color : #fff602; padding: 5px; margin: 5px; font-weight: bold;}
+        .button10{ background-color : #17becf; padding: 5px; margin: 5px; font-weight: bold;}
+        .button11{ background-color : #9467b8; padding: 5px; margin: 5px; font-weight: bold;}
+        .button12{ background-color : #bcbd22; padding: 5px; margin: 5px; font-weight: bold;}
+        .button13{ background-color : #ff6073; padding: 5px; margin: 5px; font-weight: bold;}
+        .button14{ background-color : #ACE93D; padding: 5px; margin: 5px; font-weight: bold;}
+        .button15{ padding: 5px; margin: 5px; font-weight: bold;}
+
+
+
+    </style>
+
+</head>
+<body>
+<script>
+    // var dataset=[5,25,13,62,44];
+    var data = d3.json('movie.json', function(error, data)
+    {
+        if (error)
+        {
+            console.error('Error getting or parsing the data.');
+            throw error;
+        }
+        var fox = 0;
+        var disney = 0;
+        var dreamworks = 0;
+        var lionsgate = 0;
+        var paramount = 0;
+        var relativity = 0;
+        var sony = 0;
+        var summit = 0;
+        var universal = 0;
+        var wb = 0;
+
+        for (var i = 0; i < data.length; i++)
+        {
+            if (data[i].studio == "Fox") {
+                fox = fox + data[i].wgross;
+            }
+            if (data[i].studio == "Disney") {
+                disney = disney + data[i].wgross;
+            }
+            if (data[i].studio == "DreamWorks") {
+                dreamworks = dreamworks + data[i].wgross;
+            }
+            if (data[i].studio == "Lionsgate") {
+                lionsgate = lionsgate + data[i].wgross;
+            }
+            if (data[i].studio == "Paramount") {
+                paramount = paramount + data[i].wgross;
+            }
+            if (data[i].studio == "Relativity") {
+                relativity = relativity + data[i].wgross;
+            }
+            if (data[i].studio == "Sony") {
+                sony = sony + data[i].wgross;
+            }
+            if (data[i].studio == "Summit") {
+                summit = summit + data[i].wgross;
+            }
+            if (data[i].studio == "Universal") {
+                universal = universal + data[i].wgross;
+            }
+            if (data[i].studio == "WB") {
+                wb = wb + data[i].wgross;
+            }
+        }
+
+        console.log (sony);
+
+
+        var datas = [{"studio": "Disney", "gross": disney.toFixed(0)},
+            {"studio": "DreamWorks", "gross": dreamworks.toFixed(0)},
+            {"studio": "Fox", "gross": fox.toFixed(0)},
+            {"studio": "Lionsgate", "gross": lionsgate.toFixed(0)},
+            {"studio": "Paramount", "gross": paramount.toFixed(0)},
+            {"studio": "Relativity", "gross": relativity.toFixed(0)},
+            {"studio": "Sony", "gross": sony.toFixed(0)},
+            {"studio": "Summit", "gross": summit.toFixed(0)},
+            {"studio": "Universal", "gross": universal.toFixed(0)},
+            {"studio": "WB", "gross": wb.toFixed(0)}];
+
+        console.log(datas[8].gross);
+        console.log(datas[9].gross);
+
+        var temp = datas;
+
+        var dataset = temp;
+
+        console.log(dataset);
+
+        d3.select(".studioTitle").html("");
+        var sel_studio = null;
+
+        function arrangeAlpha()
+        {
+            dataset = [{"studio": "Disney", "gross": disney.toFixed(0)},
+                {"studio": "DreamWorks", "gross": dreamworks.toFixed(0)},
+                {"studio": "Fox", "gross": fox.toFixed(0)},
+                {"studio": "Lionsgate", "gross": lionsgate.toFixed(0)},
+                {"studio": "Paramount", "gross": paramount.toFixed(0)},
+                {"studio": "Relativity", "gross": relativity.toFixed(0)},
+                {"studio": "Sony", "gross": sony.toFixed(0)},
+                {"studio": "Summit", "gross": summit.toFixed(0)},
+                {"studio": "Universal", "gross": universal.toFixed(0)},
+                {"studio": "WB", "gross": wb.toFixed(0)}];
+
+
+            var grossmax = 0;
+            for (var j = 0; j < dataset.length; j++)
+            {
+
+                if(+dataset[j].gross > grossmax)
+                    grossmax= +dataset[j].gross;
+            }
+
+            var margin = {top: 20, right: 20, bottom: 20, left: 30},
+                width = 700- margin.left - margin.right,
+                height = 645 - margin.top - margin.bottom;
+
+            var barWidth =  width/dataset.length;
+
+            var div = d3.select("body").append("div")
+                .attr("class", "studioTitle");
+            d3.select(".studioTitle").html("");
+            d3.selectAll(".studioTitle").remove();
+            var sel_studio = null;
+
+            d3.select(".chart1").html("");
+            d3.select(".chart2").html("");
+            d3.select(".options2").style("opacity", 0);
+
+            var svg= d3.select(".chart1").append("svg").attr("width", width).attr("height",height).append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var w = 500;//width - margin.left - margin.right;
+
+            var xScale = d3.scaleBand()
+                .domain(dataset.map(function (d){return d.studio;}))
+                .rangeRound([0,w]);
+            //.range("20th Century Fox", "Disney" ,"Dreamworks","Lionsgate" , "Paramount");
+
+            var h = 500;//height - margin.bottom - margin.top;
+
+            var yScale = d3.scaleLinear()
+                .domain([0, grossmax])
+                .range([h, 0]);
+
+            var xAxis = d3.axisBottom()
+                .scale(xScale);
+            svg.append("g")
+                .attr("transform",	"translate(" + margin.left + "," + h +	")")
+                //.attr("transform", function(d,i){ return "translate(" + i * barWidth/2 + "," + h +	")";})
+                .call(xAxis);
+
+            svg.append("text")
+                .attr("transform", "translate(" + (w/2) + " ," + (h + margin.top + 20) + ")")
+                .style("text-anchor", "middle")
+                .text("Studio");
+
+            var yAxis = d3.axisLeft()
+                .scale(yScale);
+            svg.append("g")
+                .attr("transform",	"translate(" + margin.left + ",0)")
+                .call(yAxis);
+
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left)
+                .attr("x",0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Gross");
+
+            var bar= svg.selectAll("bar")
+                .data(dataset)
+                .enter()
+                .append("g").attr("transform", function(d,i){ return "translate(" + (margin.left + 15) /*i * barWidth/2*/ + ",0)";})
+                .append("rect")
+                .attr("class","bar")
+                .attr("x",function(d){return xScale(d.studio);})
+                .attr("y",function(d){return yScale(d.gross);})
+                .attr("id", function(d) {return d.studio;})
+                .attr("width", "20px")
+                .attr("height", function(d){return h - yScale(d.gross);})
+                .on("click", function() {
+                    sel_studio = null;
+                    sel_studio = this.getAttribute("id");
+                    displaymovies(sel_studio);
+                    var div = d3.select("body").append("div")
+                        .attr("class", "studioTitle");
+                    d3.select(".studioTitle").html("");
+                    div.transition()
+                        .duration(200);
+                    div.html("Movies by Genre for " + sel_studio)
+                        .style("left", "900px")
+                        .style("top", "80px")
+                        .style("opacity", 1);
+                    d3.select(".options2").style("opacity", 1);
+                });
+        }
+
+        function arrangeAsc()
+        {
+            var orddatas = temp.sort(function(a,b){return a.gross-b.gross;});
+            dataset = orddatas;
+            console.log(dataset);
+
+            var grossmax = 0;
+            for (var j = 0; j < dataset.length; j++)
+            {
+
+                if(+dataset[j].gross > grossmax)
+                    grossmax= +dataset[j].gross;
+            }
+
+            var margin = {top: 20, right: 20, bottom: 20, left: 30},
+                width = 700- margin.left - margin.right,
+                height = 645 - margin.top - margin.bottom;
+
+            var barWidth =  width/dataset.length;
+
+            var div = d3.select("body").append("div")
+                .attr("class", "studioTitle");
+            d3.select(".studioTitle").html("");
+            d3.selectAll(".studioTitle").remove();
+
+            var sel_studio = null;
+
+            d3.select(".chart1").html("");
+            d3.select(".chart2").html("");
+            d3.select(".options2").style("opacity", 0);
+
+            var svg= d3.select(".chart1").append("svg").attr("width", width).attr("height",height).append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var w = 500;//width - margin.left - margin.right;
+
+            var xScale = d3.scaleBand()
+                .domain(dataset.map(function (d){return d.studio;}))
+                .rangeRound([0,w]);
+            //.range("20th Century Fox", "Disney" ,"Dreamworks","Lionsgate" , "Paramount");
+
+            var h = 500;//height - margin.bottom - margin.top;
+
+            var yScale = d3.scaleLinear()
+                .domain([0, grossmax])
+                .range([h, 0]);
+
+            var xAxis = d3.axisBottom()
+                .scale(xScale);
+            svg.append("g")
+                .attr("transform",	"translate(" + margin.left + "," + h +	")")
+                //.attr("transform", function(d,i){ return "translate(" + i * barWidth/2 + "," + h +	")";})
+                .call(xAxis);
+
+            svg.append("text")
+                .attr("transform", "translate(" + (w/2) + " ," + (h + margin.top + 20) + ")")
+                .style("text-anchor", "middle")
+                .text("Studio");
+
+            var yAxis = d3.axisLeft()
+                .scale(yScale);
+            svg.append("g")
+                .attr("transform",	"translate(" + margin.left + ",0)")
+                .call(yAxis);
+
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left)
+                .attr("x",0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Gross");
+
+            var bar= svg.selectAll("bar")
+                .data(dataset)
+                .enter()
+                .append("g").attr("transform", function(d,i){ return "translate(" + (margin.left + 15) /*i * barWidth/2*/ + ",0)";})
+                .append("rect")
+                .attr("class","bar")
+                .attr("x",function(d){return xScale(d.studio);})
+                .attr("y",function(d){return yScale(d.gross);})
+                .attr("id", function(d) {return d.studio;})
+                .attr("width", "20px")
+                .attr("height", function(d){return h - yScale(d.gross);})
+                .on("click", function() {
+                    sel_studio = null;
+                    sel_studio = this.getAttribute("id");
+                    displaymovies(sel_studio);
+                    var div = d3.select("body").append("div")
+                        .attr("class", "studioTitle");
+                    d3.select(".studioTitle").html("");
+                    div.transition()
+                        .duration(200);
+                    div.html("Movies by Genre for " + sel_studio)
+                        .style("left", "900px")
+                        .style("top", "80px")
+                        .style("opacity", 1);
+                    d3.select(".options2").style("opacity", 1);
+                });
+        }
+
+        document.getElementById("alpha").addEventListener("click",arrangeAlpha);
+        document.getElementById("asc").addEventListener("click",arrangeAsc);
+
+
+        var grossmax = 0;
+        for (var j = 0; j < dataset.length; j++)
+        {
+
+            if(+dataset[j].gross > grossmax)
+                grossmax= +dataset[j].gross;
+        }
+
+        var margin = {top: 20, right: 20, bottom: 20, left: 30},
+            width = 700- margin.left - margin.right,
+            height = 645 - margin.top - margin.bottom;
+
+        var barWidth =  width/dataset.length;
+
+        var div = d3.select("body").append("div")
+            .attr("class", "studioTitle");
+        d3.select(".studioTitle").html("");
+        d3.selectAll(".studioTitle").remove();
+
+        var sel_studio = null;
+
+        var svg= d3.select(".chart1").append("svg").attr("width", width).attr("height",height).append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var w = 500;//width - margin.left - margin.right;
+
+        var xScale = d3.scaleBand()
+            .domain(dataset.map(function (d){return d.studio;}))
+            .rangeRound([0,w]);
+        //.range("20th Century Fox", "Disney" ,"Dreamworks","Lionsgate" , "Paramount");
+
+        var h = 500;//height - margin.bottom - margin.top;
+
+        var yScale = d3.scaleLinear()
+            .domain([0, grossmax])
+            .range([h, 0]);
+
+        var xAxis = d3.axisBottom()
+            .scale(xScale);
+        svg.append("g")
+            .attr("transform",	"translate(" + margin.left + "," + h +	")")
+            //.attr("transform", function(d,i){ return "translate(" + i * barWidth/2 + "," + h +	")";})
+            .call(xAxis);
+
+        svg.append("text")
+            .attr("transform", "translate(" + (w/2) + " ," + (h + margin.top + 20) + ")")
+            .style("text-anchor", "middle")
+            .text("Studio");
+
+        var yAxis = d3.axisLeft()
+            .scale(yScale);
+        svg.append("g")
+            .attr("transform",	"translate(" + margin.left + ",0)")
+            .call(yAxis);
+
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Gross");
+
+        var bar= svg.selectAll("bar")
+            .data(dataset)
+            .enter()
+            .append("g").attr("transform", function(d,i){ return "translate(" + (margin.left + 15)  + ",0)";})
+            .append("rect")
+            .attr("class","bar")
+            .attr("x",function(d){return xScale(d.studio);})
+            .attr("y",function(d){return yScale(d.gross);})
+            .attr("id", function(d) {return d.studio;})
+            .attr("width", "20px")
+            .attr("height", function(d){return h - yScale(d.gross);})
+            .on("click", function() {
+                sel_studio = null;
+                sel_studio = this.getAttribute("id");
+                var div = d3.select("body").append("div")
+                    .attr("class", "studioTitle");
+                d3.select(".studioTitle").html("");
+                displaymovies(sel_studio);
+                div.transition()
+                    .duration(200);
+                div.html("Movies by Genre for " + sel_studio)
+                    .style("left", "900px")
+                    .style("top", "80px")
+                    .style("opacity", 1);
+                d3.select(".options2").style("opacity", 1);
+            });
+
+        function displaymovies(studiox){
+
+            var film = [];
+
+            var margin = {top: 20, right: 20, bottom: 20, left: 30},
+                width = 700- margin.left - margin.right,
+                height = 545 - margin.top - margin.bottom;
+
+            for (var i=0; i<data.length; i++)
+                if (data[i].studio == studiox)
+                    film.push({"name": data[i].film, "gross": data[i].wgross, "rt": data[i].rating, "genre": data[i].genre});
+
+            d3.select(".chart2").html("");
+            var svg = d3.select(".chart2").append("svg").attr('width', '100%').attr('height', '100%')
+                .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var rtmax= d3.max(film, function(d){ return +d.rt;});
+            var grossmax= d3.max(film, function(d){ return +d.gross;});
+
+            var colors = d3.scaleOrdinal()
+                .domain(['Action', 'Adventure', 'Animation','Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy', 'Horror', 'Musical', 'Mystery', 'Romance','Thriller'])
+                .range(['#1f77b4','#ff7f0e', '#2ca02c', '#d62728', '#e6ab02', '#8c564b', '#e377c2', '#7f7f7f', '#fff602', '#17becf', '#9467b8', '#bcbd22', '#ff6073', '#ACE93D']);
+
+            var xScale = d3.scaleLinear()
+                .domain([0, rtmax])
+                .range([0, 500]);
+
+            var yScale = d3.scaleLinear()
+                .domain([0, grossmax])
+                .range([500, 0]);
+
+            var xAxis = d3.axisBottom()
+                .scale(xScale);
+
+
+            var div = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+
+            svg.append("g")
+                .attr("transform", "translate(" + margin.left + "," + height + ")")
+                .call(xAxis);
+
+            svg.append("text")
+                .attr("transform", "translate(" + (width / 2 - 20) + " ," + (height + margin.top + 20) + ")")
+                .style("text-anchor", "middle")
+                .text("Ratings");
+
+            var yAxis = d3.axisLeft()
+                .scale(yScale);
+            svg.append("g")
+                .attr("transform", "translate(" + margin.left + ",0)")
+                .call(yAxis);
+
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left)
+                .attr("x", 0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Gross");
+
+            svg.selectAll("circle")
+                .data(film)
+                .enter().filter(function (d) {
+                if ((d.gross == null || d.rt == null)) {
+                    return false; //This item will be excluded, e.g. "cheese"
+                }
+                else {
+                    return true; //This item will be included in the selection
+                }
+            })
+                .append("circle")
+                .attr("cx", function (d) {
+                    return xScale(d.rt) + margin.left;
+                })
+                .attr("cy", function (d) {
+                    return yScale(d.gross);
+                })
+                .attr("r", 5)
+                .attr("class", function (d) {return d.genre;})
+                .attr("fill", function (d) {
+                    return colors(d.genre);
+                })
+                .on("mouseover", function(d) {
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    div	.html("Film: " + d.name + "<br/>"  + "Gross: " + d.gross +"<br/>" + "Rotten Tomatoes Rating: " + d.rt)
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    div.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+
+
+
+
+
+
+
+
+
+        }
+
+
+        function displaygenres(studiox) {
+
+            var action = [];
+            var adventure = [];
+            var animation = [];
+            var biography = [];
+            var comedy = [];
+            var crime = [];
+            var documentary = [];
+            var drama = [];
+            var fantasy = [];
+            var horror = [];
+            var musical = [];
+            var mystery = [];
+            var romance = [];
+            var thriller = [];
+            var genres = ['action', 'adventure', 'animation','biography', 'comedy', 'crime', 'documentary', 'drama', 'fantasy', 'horror', 'musical', 'mystery', 'romance','thriller'];
+            var colors = ['#F69745', '#F6C445', '#E9415C', '#B62E44', '#C17331', '#3863A2', '#1C3151',
+                '#7037A6', '#381B53', '#4DCC39', '#26661C', '#2FB369', '#ACE93D', '#165A34', '#750000'];
+
+            // loop through dataset and push gross and ratings to each genres array
+            for (var i=0; i<data.length; i++){
+                if (data[i].studio == studiox){
+                    if (data[i].genre == "Action"){
+                        action.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Adventure"){
+                        adventure.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Animation"){
+                        animation.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Biography"){
+                        biography.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Comedy"){
+                        comedy.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Crime"){
+                        crime.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Documentary"){
+                        documentary.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Drama"){
+                        drama.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Fantasy"){
+                        fantasy.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Horror"){
+                        horror.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Musical"){
+                        musical.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Mystery"){
+                        mystery.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Romance"){
+                        romance.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                    if (data[i].genre == "Thriller"){
+                        thriller.push({"gross": data[i].wgross, "rt": data[i].rating});}
+                }}
+            // Create data array and add genre names and gross and rt means pulled from each genres array
+            var gdata = [{"genre": "Action", "Gross": d3.mean(action, function(d) {return d.gross;}), "RT": d3.mean(action, function(d) {return d.rt;})},
+                {"genre": "Adventure", "Gross": d3.mean(adventure, function(d) {return d.gross;}), "RT": d3.mean(adventure, function(d) {return d.rt;})},
+                {"genre": "Animation", "Gross": d3.mean(animation, function(d) {return d.gross;}), "RT": d3.mean(animation, function(d) {return d.rt;})},
+                {"genre": "Biography", "Gross": d3.mean(biography, function(d) {return d.gross;}), "RT": d3.mean(biography, function(d) {return d.rt;})},
+                {"genre": "Comedy", "Gross": d3.mean(comedy, function(d) {return d.gross;}), "RT": d3.mean(comedy, function(d) {return d.rt;})},
+                {"genre": "Crime", "Gross": d3.mean(crime, function(d) {return d.gross;}), "RT": d3.mean(crime, function(d) {return d.rt;})},
+                {"genre": "Documentary", "Gross": d3.mean(documentary, function(d) {return d.gross;}), "RT": d3.mean(documentary, function(d) {return d.rt;})},
+                {"genre": "Drama", "Gross": d3.mean(drama, function(d) {return d.gross;}), "RT": d3.mean(drama, function(d) {return d.rt;})},
+                {"genre": "Fantasy", "Gross": d3.mean(fantasy, function(d) {return d.gross;}), "RT": d3.mean(fantasy, function(d) {return d.rt;})},
+                {"genre": "Horror", "Gross": d3.mean(horror, function(d) {return d.gross;}), "RT": d3.mean(horror, function(d) {return d.rt;})},
+                {"genre": "Musical", "Gross": d3.mean(musical, function(d) {return d.gross;}), "RT": d3.mean(musical, function(d) {return d.rt;})},
+                {"genre": "Mystery", "Gross": d3.mean(mystery, function(d) {return d.gross;}), "RT": d3.mean(mystery, function(d) {return d.rt;})},
+                {"genre": "Romance", "Gross": d3.mean(romance, function(d) {return d.gross;}), "RT": d3.mean(romance, function(d) {return d.rt;})},
+                {"genre": "Thriller", "Gross": d3.mean(thriller, function(d) {return d.gross;}), "RT": d3.mean(thriller, function(d) {return d.rt;})},
+            ];
+
+            console.log(gdata);
+
+            var rtmax = d3.max(gdata.map(function(d){return d.RT;}));
+            var grossmax = d3.max(gdata.map(function(d){return d.Gross;}));
+
+            d3.select(".chart2").html("");
+            //console.log(d3.select(".chart2"))
+
+            var svg = d3.select(".chart2").append("svg").attr('width', '100%').attr('height', '100%')
+                .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var xScale = d3.scaleLinear()
+                .domain([0, rtmax])
+                .range([0, 500]);
+
+            var yScale = d3.scaleLinear()
+                .domain([0, grossmax])
+                .range([500, 0]);
+
+            var xAxis = d3.axisBottom()
+                .scale(xScale);
+            svg.append("g")
+                .attr("transform",	"translate(" + margin.left + "," + height +	")")
+                .call(xAxis);
+
+            svg.append("text")
+                .attr("transform", "translate(" + (width/2 - 20) + " ," + (height + margin.top + 20) + ")")
+                .style("text-anchor", "middle")
+                .text("Ratings");
+
+            var yAxis = d3.axisLeft()
+                .scale(yScale);
+            svg.append("g")
+                .attr("transform",	"translate(" + margin.left + ",0)")
+                .call(yAxis);
+
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left)
+                .attr("x",0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Gross");
+
+            svg.selectAll("circle")
+                .data(gdata)
+                .enter().filter(function(d) {
+                if ((d.Gross == null || d.RT == null)) {
+                    return false; //This item will be excluded, e.g. "cheese"
+                }
+                else {
+                    return true; //This item will be included in the selection
+                }})
+                .append("circle")
+                .attr("cx",	function(d)	{return	xScale(d.RT);})
+                .attr("cy",	function(d)	{return	yScale(d.Gross);})
+                .attr("r",	10)
+                .attr("fill", function(d, index){
+                    return(colors[index])});
+
+
+        }
+
+    })
+
+    function myHighlight(genrex) {
+
+        console.log("Hello");
+
+        //document.getElementById("genrex").style.color = "red";
+
+        var x = document.getElementsByTagName("circle");
+
+        for (var i=0; i < x.length; i++) {
+        var y = x[i].getAttribute("class");
+            x[i].style.opacity= 1 ;
+            if (y!=genrex)
+            {
+                x[i].style.opacity= 0.1 ;
+            }
+        }
+    }
+
+
+    function noHighlight() {
+
+        var x = document.getElementsByTagName("circle");
+
+        for (var i=0; i < x.length; i++) {
+            x[i].style.opacity= 1 ;
+        }
+    }
+
+</script>
+    <h2>Hollywood Dataset Interactive Viz by Tanya and Aarti</h2>
+    <h1>Top 10 Highest Grossing Studios of Hollywood</h1>
+    <div class="chart1" id="studio"> </div>
+    <div class="chart2" id="genre"> </div>
+    <div class="options1">
+        <div class= "row"> <p> Click on each bar to view the films for each studio. </p></div>
+        <div class= "row"> <p> Click on each button to re-arrange the columns. </p></div>
+        <div class="row">
+            <button id="alpha" class="button15">Arrange in alphabetical order</button>
+            <button id="asc" class="button15">Arrange in ascending order</button>
+        </div>
+    </div>
+    <div class= "options2 ">
+        <div class= "row"> <p> Hover on each point to see movie details. Click on each genre to filter the view. </p></div>
+        <div class= "row">
+            <button class="button1" onclick="myHighlight('Action')">Action</button>
+            <button class="button2" onclick="myHighlight('Adventure')">Adventure</button>
+            <button class="button3" onclick="myHighlight('Animation')">Animation</button>
+            <button class="button4" onclick="myHighlight('Biography')">Biography</button>
+            <button class="button5" onclick="myHighlight('Comedy')">Comedy</button>
+            <button class="button6" onclick="myHighlight('Crime')">Crime</button>
+            <button class="button7" onclick="myHighlight('Documentary')">Documentary</button>
+        </div>
+        <div class= "row">
+            <button class="button8" onclick="myHighlight('Drama')">Drama</button>
+            <button class="button9" onclick="myHighlight('Fantasy')">Fantasy</button>
+            <button class="button10" onclick="myHighlight('Horror')">Horror</button>
+            <button class="button11" onclick="myHighlight('Musical')">Musical</button>
+            <button class="button12" onclick="myHighlight('Mystery')">Mystery</button>
+            <button class="button13" onclick="myHighlight('Romance')">Romance</button>
+            <button class="button14" onclick="myHighlight('Thriller')">Thriller</button>
+            <button class="button15" onclick="noHighlight()">Reset</button>
+        </div>
+    </div>
+
+</body>
+</html>
